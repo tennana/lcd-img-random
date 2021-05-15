@@ -17,13 +17,11 @@ def convert(image_path):
     return Image.open(image_path)
 
 
-def loop_image_until_press(button, posn):
-    while button.is_pressed != True:
-        show_image = choice(image_list)
-        background = Image.new("RGB", device.size, BACKGROUND_COLOR)
-        background.paste(show_image, posn)
-        device.display(background.convert(device.mode))
-        sleep(0.1)
+def display_random_image(image_list, device, button, posn):
+    show_image = choice(image_list)
+    background = Image.new("RGB", device.size, BACKGROUND_COLOR)
+    background.paste(show_image, posn)
+    device.display(background.convert(device.mode))
 
 def main():
     serial = i2c(port=1, address=0x3C)
@@ -38,11 +36,10 @@ def main():
 
     with canvas(device) as draw:
     	while True:
-            loop_image_until_press(button, posn)
-            show_image = choice(image_list)
-            background = Image.new("RGB", device.size, BACKGROUND_COLOR)
-            background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
-            device.display(background.convert(device.mode))
+            while button.is_pressed != True:
+                display_random_image(image_list, device, button, posn)
+                sleep(0.1)
+            display_random_image(image_list, device, button, posn)
             button.wait_for_press()
 
 if __name__ == "__main__":
