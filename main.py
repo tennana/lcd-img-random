@@ -29,10 +29,16 @@ def main():
     button = Button(BUTTON_GPIO_NUMBER)
 
     with canvas(device) as draw:
-        draw.text("Hallo Hero.")
-        sleep(1)
-        draw.multiline_text([0, 0], "Hallo Hero.\n Press Button!")
-        button.wait_for_press()
+#        while button.is_pressed != True:
+#                draw.multiline_text((10, 0), "Hallo Hero.\n Press Button!", fill=BACKGROUND_COLOR)
+#                sleep(0.1)
+        while button.is_pressed != True:
+                show_image = choice(image_list)
+                background = Image.new("RGB", device.size, BACKGROUND_COLOR)
+                background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
+                device.display(background.convert(device.mode))
+                sleep(0.1)
+
         show_image = choice(image_list)
         background = Image.new("RGB", device.size, BACKGROUND_COLOR)
         background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
@@ -45,6 +51,7 @@ def main():
                 background = Image.new("RGB", device.size, BACKGROUND_COLOR)
                 background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
                 previous_pressed = button.is_pressed
+            sleep(0.1)
 
 if __name__ == "__main__":
     try:
