@@ -40,12 +40,7 @@ def main():
             device.display(background.convert(device.mode))
 
             if button.is_pressed:
-                if button.hold_time >= 10:
-                    break
                 show_image = choice(image_list)
-        draw.multiline_text([10, 21], "Good Bye Hero...")
-        sleep(5)
-
 
 if __name__ == "__main__":
     try:
