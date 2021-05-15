@@ -22,7 +22,7 @@ def main():
     size = [min(*device.size)] * 2
     posn = ((device.width - size[0]) // 2, device.height - size[1])
 
-    path_list = glob.glob('img/*')
+    path_list = glob.glob('img/*.*')
     image_list = list(map(convert, path_list))
 
     button = Button(BUTTON_GPIO_NUMBER)
