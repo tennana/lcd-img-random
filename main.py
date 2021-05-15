@@ -17,6 +17,14 @@ def convert(image_path):
     return Image.open(image_path)
 
 
+def loop_image_until_press(posn):
+    while button.is_pressed != True:
+        show_image = choice(image_list)
+        background = Image.new("RGB", device.size, BACKGROUND_COLOR)
+        background.paste(show_image, posn)
+        device.display(background.convert(device.mode))
+        sleep(0.1)
+
 def main():
     serial = i2c(port=1, address=0x3C)
     device = sh1106(serial, rotate=0)
@@ -29,29 +37,13 @@ def main():
     button = Button(BUTTON_GPIO_NUMBER)
 
     with canvas(device) as draw:
-#        while button.is_pressed != True:
-#                draw.multiline_text((10, 0), "Hallo Hero.\n Press Button!", fill=BACKGROUND_COLOR)
-#                sleep(0.1)
-        while button.is_pressed != True:
-                show_image = choice(image_list)
-                background = Image.new("RGB", device.size, BACKGROUND_COLOR)
-                background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
-                device.display(background.convert(device.mode))
-                sleep(0.1)
-
-        show_image = choice(image_list)
-        background = Image.new("RGB", device.size, BACKGROUND_COLOR)
-        background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
-        previous_pressed = False
-        while True:
+    	while True:
+            loop_image_until_press(posn)
+            show_image = choice(image_list)
+            background = Image.new("RGB", device.size, BACKGROUND_COLOR)
+            background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
             device.display(background.convert(device.mode))
-
-            if button.is_pressed | previous_pressed:
-                show_image = choice(image_list)
-                background = Image.new("RGB", device.size, BACKGROUND_COLOR)
-                background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
-                previous_pressed = button.is_pressed
-            sleep(0.1)
+            button.wait_for_press()
 
 if __name__ == "__main__":
     try:
