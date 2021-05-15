@@ -17,7 +17,7 @@ def convert(image_path):
     return Image.open(image_path)
 
 
-def loop_image_until_press(posn):
+def loop_image_until_press(button, posn):
     while button.is_pressed != True:
         show_image = choice(image_list)
         background = Image.new("RGB", device.size, BACKGROUND_COLOR)
@@ -38,7 +38,7 @@ def main():
 
     with canvas(device) as draw:
     	while True:
-            loop_image_until_press(posn)
+            loop_image_until_press(button, posn)
             show_image = choice(image_list)
             background = Image.new("RGB", device.size, BACKGROUND_COLOR)
             background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
