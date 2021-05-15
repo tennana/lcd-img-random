@@ -39,8 +39,11 @@ def main():
         while True:
             device.display(background.convert(device.mode))
 
-            if button.is_pressed:
+            if button.is_pressed | previous_pressed:
                 show_image = choice(image_list)
+                background = Image.new("RGB", device.size, "white")
+                background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
+                previous_pressed = button.is_pressed
 
 if __name__ == "__main__":
     try:
