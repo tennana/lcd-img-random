@@ -35,12 +35,14 @@ def main():
     button = Button(BUTTON_GPIO_NUMBER)
 
     with canvas(device) as draw:
-    	while True:
+        while True:
             while button.is_pressed != True:
                 display_random_image(image_list, device, button, posn)
                 sleep(0.1)
             display_random_image(image_list, device, button, posn)
+            button.wait_for_release()
             button.wait_for_press()
+            button.wait_for_release()
 
 if __name__ == "__main__":
     try:
