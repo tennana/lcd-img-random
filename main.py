@@ -9,6 +9,7 @@ from PIL import Image
 from gpiozero import Button
 
 BUTTON_GPIO_NUMBER = 18
+BACKGROUND_COLOR = "white"
 
 # see https://github.com/rm-hull/luma.examples/tree/master/examples
 
@@ -33,7 +34,7 @@ def main():
         draw.multiline_text([0, 0], "Hallo Hero.\n Press Button!")
         button.wait_for_press()
         show_image = choice(image_list)
-        background = Image.new("RGB", device.size, "white")
+        background = Image.new("RGB", device.size, BACKGROUND_COLOR)
         background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
         previous_pressed = False
         while True:
@@ -41,7 +42,7 @@ def main():
 
             if button.is_pressed | previous_pressed:
                 show_image = choice(image_list)
-                background = Image.new("RGB", device.size, "white")
+                background = Image.new("RGB", device.size, BACKGROUND_COLOR)
                 background.paste(show_image.resize(size, resample=Image.LANCZOS), posn)
                 previous_pressed = button.is_pressed
 
