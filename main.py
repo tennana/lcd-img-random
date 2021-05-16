@@ -27,7 +27,15 @@ def main():
     serial = i2c(port=1, address=0x3C)
     device = sh1106(serial, rotate=0)
     size = [min(*device.size)] * 2
+    # 描画位置の計算
     posn = ((device.width - size[0]) // 2, device.height - size[1])
+
+    # 終了時処理の登録
+    def sig_handler(signum, frame) -> None:
+        device.cleanup()
+        sys.exit(1)
+    signal.signal(signal.SIGTERM, sig_handler)
+    signal.signal(signal.SIGINT, sig_handler)
 
     path_list = glob.glob('img/*.*')
     image_list = list(map(convert, path_list))
