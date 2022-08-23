@@ -4,7 +4,7 @@ from luma.core.interface.serial import i2c
 from luma.core.render import canvas
 from luma.oled.device import sh1106
 from time import sleep
-import glob
+from pathlib import Path
 from PIL import Image
 from gpiozero import Button
 
@@ -37,7 +37,8 @@ def main():
     signal.signal(signal.SIGTERM, sig_handler)
     signal.signal(signal.SIGINT, sig_handler)
 
-    path_list = glob.glob('img/*.*')
+    current_dir = Path(__file__).parent
+    path_list = current_dir.glob('img/*.*')
     image_list = list(map(convert, path_list))
 
     button = Button(BUTTON_GPIO_NUMBER)
